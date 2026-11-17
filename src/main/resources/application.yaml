@@ -1,0 +1,42 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+spring:
+  application:
+    name: shop-service
+  datasource:
+    username: root
+    password: Dinhminhchien@123
+    url: jdbc:mysql://localhost:3306/shop_service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: order-service
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+
+server:
+  error:
+    include-exception: true
+    include-message: always
+    include-binding-errors: always
+  port: 1002
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
